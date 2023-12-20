@@ -1,6 +1,6 @@
 ## Cluster setup
 ```bash
-getnode -p gpu
+getnode -p gpu  # this also loads gcc
 module add soft/nvidia/cuda/12.0
 /usr/bin/python3.9 -m venv .env
 source .env/bin/activate
