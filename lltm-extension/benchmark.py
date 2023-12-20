@@ -39,6 +39,7 @@ def benchmark(version, lltm_type, device, sync) -> None:
 
 if __name__ == "__main__":
     from lltm import LLTM as LLTM_cpp
+    from lltm import set_cpu_backend, set_cuda_backend
     from lltm_native_python import LLTM as LLTM_native_python
 
     # from torch.utils.cpp_extension import load
@@ -47,8 +48,9 @@ if __name__ == "__main__":
 
     cpu_device = torch.device("cpu")  # device object representing CPU
 
-    # benchmark("CPU: Python", LLTM_native_python, cpu_device, False)
-    # benchmark("CPU: C++", LLTM_cpp, cpu_device, False)
+    set_cpu_backend()
+    benchmark("CPU: Python", LLTM_native_python, cpu_device, False)
+    benchmark("CPU: C++", LLTM_cpp, cpu_device, False)
     # benchmark("CPU: JIT C++", lltm_cpp.LLTM, cpu_device, False)
 
     print("-------------------------------")
@@ -56,6 +58,7 @@ if __name__ == "__main__":
     assert torch.cuda.is_available()
     cuda_device = torch.device("cuda")  # device object representing GPU
 
+    set_cuda_backend()
     benchmark("GPU: Python", LLTM_native_python, cuda_device, True)
     benchmark("GPU: C++", LLTM_cpp, cuda_device, True)
     # benchmark("GPU: JIT C++", lltm_cpp.LLTM, cuda_device, True)

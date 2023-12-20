@@ -3,13 +3,29 @@ import torch
 
 # Our module!
 # import lltm_cpp as lltm_backend
-import lltm_cuda as lltm_backend
+
+
+
+_BACKEND = None
+
+
+def set_cpu_backend() -> None:
+    import lltm_cpp
+    global _BACKEND
+    _BACKEND = lltm_cpp
+
+
+def set_cuda_backend() -> None:
+    import lltm_cuda
+    global _BACKEND
+    _BACKEND = lltm_cuda
 
 
 class LLTMFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, input, weights, bias, old_h, old_cell):
-        outputs = lltm_backend.forward(input, weights, bias, old_h, old_cell)
+        assert _BACKEND is not None, "Backend not set"
+        outputs = _BACKEND.forward(input, weights, bias, old_h, old_cell)
         new_h, new_cell = outputs[:2]
         variables = outputs[1:] + [weights]
         ctx.save_for_backward(*variables)
@@ -18,7 +34,8 @@ class LLTMFunction(torch.autograd.Function):
 
     @staticmethod
     def backward(ctx, grad_h, grad_cell):
-        outputs = lltm_backend.backward(
+        assert _BACKEND is not None, "Backend not set"
+        outputs = _BACKEND.backward(
             grad_h.contiguous(), grad_cell.contiguous(), *ctx.saved_tensors
         )
         d_old_h, d_input, d_weights, d_bias, d_old_cell = outputs
