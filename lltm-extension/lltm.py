@@ -1,22 +1,20 @@
 import math
 import torch
 
-# Our module!
-# import lltm_cpp as lltm_backend
-
-
 
 _BACKEND = None
 
 
 def set_cpu_backend() -> None:
     import lltm_cpp
+
     global _BACKEND
     _BACKEND = lltm_cpp
 
 
 def set_cuda_backend() -> None:
     import lltm_cuda
+
     global _BACKEND
     _BACKEND = lltm_cuda
 
