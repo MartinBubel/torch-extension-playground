@@ -10,9 +10,6 @@ torch::Tensor matrix_derivative_forward(
 
     auto derivatives = torch::zeros({batch_size, state_size});
 
-    const int threads = batch_size;
-    const int blocks = state_size;
-
     for (int i = 0; i < batch_size; i++) {
         for (int j = 0; j < state_size; j++) {
             if (((i + j) % 2) == 0) {
