@@ -10,6 +10,13 @@ setup(
             "matrix_derivative_cuda",
             ["matrix_derivative_cuda.cpp", "matrix_derivative_cuda_kernel.cu"],
         ),
+        CUDAExtension(
+            "core_matrix_derivative_cuda",
+            [
+                "core_matrix_derivative.cpp",
+                "core_matrix_derivative_kernel.cu",
+            ],
+        ),
     ],
     cmdclass={"build_ext": BuildExtension},
 )

@@ -15,7 +15,7 @@ torch::Tensor matrix_derivative_cuda_forward(torch::Tensor values);
 torch::Tensor matrix_derivative_forward(torch::Tensor values) {
   CHECK_INPUT(values);
   auto output = matrix_derivative_cuda_forward(values);
-  std::cout << "output: " << output << std::endl;
+  // std::cout << "output: " << output << std::endl;
   return output;
 }
 
